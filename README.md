@@ -11,7 +11,7 @@ Built by a product manager learning AI engineering from a builder's perspective.
 | Component | What it does | Try it |
 |---|---|---|
 | **Prompt playground** | Streamlit app — type one prompt, see 3 temperature variants side by side | `streamlit run playground.py` |
-| **Eval harness** | 10 test cases, 7 scorer types, runs any model against the suite | `python run_eval.py --model MiniMax-M3 --judge-model MiniMax-M3` |
+| **Eval harness** | 26 test cases (knowledge, format, extraction, classification, qualitative, **health-insurance**, edge cases), 7 scorer types, runs any model against the suite | `python run_eval.py --model MiniMax-M3 --judge-model MiniMax-M3` |
 | **Experiments** | Real model comparisons, documented findings | [`experiments/`](./experiments/) |
 
 ![Playground showing 3 temperature variants of the same prompt](./docs/screenshots/playground-filled.png)
@@ -78,11 +78,17 @@ STATUS CASE                           TIME  TOKENS  DETAIL
 [PASS] explain_concept                1.9s     127  judge (PASS): The response is factually accurate...
 [PASS] compare_options_balanced       6.3s     299  judge (PASS): The response covers pros and cons...
 [PASS] meeting_summary                4.7s     380  judge (PASS): All criteria are satisfied...
+... (16 more cases — health insurance, edge cases, variance variants) ...
+[FAIL] hi_preauth_requirement         7.6s     342  judge (FAIL): response is cut off, didn't explain prior auth...
+[FAIL] hi_preventive_care_coverage   13.0s     702  judge (FAIL): response is empty (thinking ate the budget)...
+[FAIL] edge_contradictory_instructions   6.6s     351  judge (FAIL): wrote the essay anyway, ignored the "one sentence" rule...
 
-Pass rate:    10/10 (100%)
-Avg latency:  2.71s per case
-Total tokens: 1,608
+Pass rate:    21/26 (81%)
+Avg latency:  4.15s per case
+Total tokens: 6,229
 ```
+
+The failing cases are the interesting ones — they reveal real model weaknesses (token-budget starvation, constraint-overriding reasoning, missing specific facts like "180-day appeal window").
 
 Full sample run: [`docs/sample-eval-output.txt`](./docs/sample-eval-output.txt)
 
@@ -92,13 +98,16 @@ Full sample run: [`docs/sample-eval-output.txt`](./docs/sample-eval-output.txt)
 
 The `llm_judge` scorer is the interesting one — it makes a second API call to a judge model and asks it to evaluate against a rubric. Useful for qualitative tests like "is this explanation age-appropriate?"
 
-### Test cases in `evals/sample-set.yaml`
+### Test cases in `evals/sample-set.yaml` (26 total)
 
 - **Format constraints** — word count, bullet count, JSON structure
 - **Knowledge retrieval** — capital cities, planets
-- **Extraction** — pull an email from prose
+- **Extraction** — pull an email from prose, policy numbers
 - **Classification** — sentiment
 - **Qualitative (LLM-judge)** — explain concepts, compare options, summarize meetings
+- **Health insurance (PM-flavored)** — deductibles, copay vs coinsurance, EOBs, denial reasons, formulary tiers, appeals, preventive care coverage
+- **Variance variants** — same skill, different inputs (summarization, extraction, sentiment) to measure reliability
+- **Edge cases** — empty input, contradictory system+user instructions, very long input
 
 ### Flags
 
@@ -118,7 +127,8 @@ Documented comparisons and findings in [`experiments/`](./experiments/).
 
 | # | Title | Finding |
 |---|---|---|
-| 01 | [3-model eval comparison](./experiments/01-3-model-eval-comparison.md) | M2.7 vs M2.7-highspeed vs M3 — M2.7 is the sweet spot |
+| 01 | [3-model eval comparison (10 cases)](./experiments/01-3-model-eval-comparison.md) | On an easy eval, all 3 models hit 100%. Doesn't tell you which to ship. |
+| 02 | [3-model eval comparison (26 cases)](./experiments/02-3-model-eval-on-harder-suite.md) | On a hard eval, M3 (88%) > M2.7-highspeed (81%) > M2.7 (73%). M3 costs 49% more tokens. |
 
 ---
 
@@ -130,25 +140,29 @@ These are findings from building this lab. Not opinions — measurements.
 
 M2.7-as-judge was unreliable — it over-thinks and returns empty. Switching the judge to M3 unlocked 2 cases that had been failing. **Lesson:** in production, "AI evaluates AI" needs a trustworthy evaluator. Don't use the cheapest model for judging.
 
-### 2. M2.7 is the sweet spot for most prompts
+### 2. Model choice depends on task difficulty (revisit, don't trust a single eval)
 
-On our 10-case suite, M2.7 hit the same 10/10 as M3 while using **2.4x fewer tokens**. M3 wasn't better — just more verbose. **Lesson:** when evaluating models, measure cost and quality together. A "bigger" model isn't a "better" model for the task.
+On the easy 10-case suite, M2.7 hit the same 10/10 as M3 while using fewer tokens. On the harder 26-case suite (with PM-flavored health insurance cases), the ranking flipped: **M3 88% > M2.7-highspeed 81% > M2.7 73%**. **Lesson:** a single eval is a snapshot. The PM move is to run the same comparison against a *harder* suite before you commit to a model — and weight the harder numbers, because those are closer to real product traffic.
 
-### 3. "Fast" models aren't free
+### 3. "Fast" models aren't free — but the tradeoff is more nuanced than the marketing
 
-M2.7-highspeed was the fastest (2.92s/case) but scored 8/10 instead of 10/10. The "highspeed" optimization trades reasoning quality for latency. **Lesson:** vendor "speed tier" pitches usually hide a quality cut.
+On the 10-case suite, M2.7-highspeed was the fastest but lost 2 points. On the 26-case suite, highspeed actually *beat* M2.7 (81% vs 73%) — less over-thinking on hard prompts gave more reliable answers. **Lesson:** "speed tier" pitches aren't always a quality cut. For harder prompts, sometimes the cheaper model with less reasoning is the better choice. Always measure.
 
 ### 4. Token budget = output completeness
 
-M2.7 emits a `` block before answering. That reasoning eats into the token cap. At `max_tokens=300`, the visible answer often cuts off mid-sentence. At 800, complete answers. **Lesson:** budget for AI products must include reasoning overhead — typically 60-70% of the cap is invisible to the user.
+M2.7 emits a `` block before answering. That reasoning eats into the token cap. At `max_tokens=300`, the visible answer often cuts off mid-sentence or returns empty. At 800, complete answers. **Lesson:** budget for AI products must include reasoning overhead — typically 60-70% of the cap is invisible to the user.
 
 ### 5. Eval scores have variance
 
-M2.7 scored 9/10 on one run, 10/10 on the next — same eval, same model, same temperature. **Lesson:** never ship a "model X is better than Y" claim from one eval run. N=3 minimum for any conclusion.
+M2.7 scored 21/26 on one run and 19/26 on the next — same eval, same model, same temperature. **Lesson:** never ship a "model X is better than Y" claim from one eval run. N=3 minimum for any conclusion worth publishing.
 
 ### 6. Prompts have ceilings
 
 The `meeting_summary` case initially required M2.7 to extract 3+ action items, but it returned 2. Even after sharpening the system prompt, M2.7's reasoning rejected "the team decided to postpone X" as "a decision, not an action item." **Lesson:** reasoning models can over-rule surface instructions. Sometimes the right fix is a stronger model, not a better prompt.
+
+### 7. Evals need to be hard to be useful
+
+The original 10-case suite had all three models at or near 100%. It looked like a tie. Adding 10 health insurance cases and 6 edge/variance cases *broke the tie*: M3 pulled ahead, highspeed moved up, M2.7 dropped 27 points. **Lesson:** a 100%-passing eval is suspicious — it usually means the cases are too easy. The PM move is to add cases that *should* fail, then see which models actually handle them.
 
 ---
 
@@ -164,9 +178,10 @@ ai-pm-prompt-lab/
 │   ├── parser.py               # Strip <think>...</think> from model output
 │   └── scorers.py              # 7 scorer implementations
 ├── evals/
-│   └── sample-set.yaml         # 10 eval cases
+│   └── sample-set.yaml         # 26 eval cases (knowledge, format, extraction, qualitative, health insurance, edge)
 ├── experiments/
-│   └── 01-3-model-eval-comparison.md
+│   ├── 01-3-model-eval-comparison.md          # 10-case baseline
+│   └── 02-3-model-eval-on-harder-suite.md     # 26-case follow-up — hard evals change the ranking
 ├── docs/
 │   ├── screenshots/            # For the README
 │   └── sample-eval-output.txt  # Frozen eval run output
@@ -196,11 +211,11 @@ After Phase 1, you should be able to evaluate any LLM feature on:
 
 | Component | Status |
 |---|---|
-| Eval harness (10 cases, 7 scorers) | ✅ done |
+| Eval harness (26 cases, 7 scorers) | ✅ done |
 | Prompt playground (model picker, temp sweep, max_tokens) | ✅ done |
-| 3-model comparison | ✅ done |
+| 3-model comparison (10-case baseline + 26-case follow-up) | ✅ done |
+| PM-flavored health insurance cases | ✅ done |
 | Variance experiments (N=3 per model) | 🚧 next |
-| PM-flavored eval cases | 🚧 planned |
 | LangChain / RAG (Phase 2) | ⏳ pending |
 | AI Agents (Phase 3) | ⏳ pending |
 
