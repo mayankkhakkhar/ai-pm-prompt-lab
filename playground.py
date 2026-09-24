@@ -30,6 +30,15 @@ VARIANTS = [
     ("C — temp=1.0 (creative)",       1.0),
 ]
 
+AVAILABLE_MODELS = [
+    "MiniMax-M2.7",
+    "MiniMax-M2.7-highspeed",
+    "MiniMax-M2.5",
+    "MiniMax-M2.5-highspeed",
+    "MiniMax-M2.1",
+    "MiniMax-M3",
+]
+
 DEFAULT_SYSTEM = "You are a helpful assistant."
 DEFAULT_USER = "Explain the difference between SQL JOIN types to a junior engineer."
 
@@ -72,12 +81,19 @@ def main() -> None:
     st.title("Prompt playground")
     st.caption("Same prompt, three temperatures, side by side.")
 
-    client, model = get_client_and_model()
+    client, default_model = get_client_and_model()
     if not client:
         st.error("MINIMAX_API_KEY not set — copy .env.example to .env and add your key.")
         st.stop()
 
-    st.caption(f"Model: `{model}`")
+    # Model picker — defaults to whatever's in .env. Lets you swap models
+    # without changing the env (and without affecting the eval harness).
+    model = st.selectbox(
+        "Model",
+        options=AVAILABLE_MODELS,
+        index=AVAILABLE_MODELS.index(default_model) if default_model in AVAILABLE_MODELS else 0,
+        help="Default is from .env (MINIMAX_MODEL). highspeed variants use less reasoning budget.",
+    )
 
     # ── Input form ───────────────────────────────────────────────────────────
     with st.form("prompt_form"):
