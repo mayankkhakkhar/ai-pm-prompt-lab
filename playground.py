@@ -125,9 +125,10 @@ def main() -> None:
             elif not out:
                 st.warning("Empty response after stripping thinking tokens.")
             else:
-                # st.code renders full content (no fixed-height truncation),
-                # adds a built-in copy button, and looks like raw model output.
-                st.code(out, language=None, wrap_lines=True)
+                # st.markdown renders the model's markdown output properly:
+                # headers, tables, bold, code blocks all display correctly.
+                # Full content is shown (no fixed-height truncation).
+                st.markdown(out)
                 st.caption(f"Latency: {lat:.2f}s  |  Tokens: {tok}")
 
 
