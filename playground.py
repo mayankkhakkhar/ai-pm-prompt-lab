@@ -104,20 +104,29 @@ def main() -> None:
         help="Cap on the model's response length. Higher = more complete answers, more cost, more latency.",
     )
 
-    # ── Input form ───────────────────────────────────────────────────────────
-    with st.form("prompt_form"):
-        system_prompt = st.text_area(
-            "System prompt (optional)",
-            value=DEFAULT_SYSTEM,
-            height=80,
-            help="Sets the model's role / instructions. Leave blank to skip.",
-        )
-        user_prompt = st.text_area(
-            "User prompt",
-            value=DEFAULT_USER,
-            height=100,
-        )
-        run = st.form_submit_button("Run all 3 variants")
+    # ── Input widgets (no form) ──────────────────────────────────────────────
+    # Using a form caused a bug where typing in the text_area sometimes
+    # didn't update the value passed to the API. Plain widgets + a button
+    # are more reliable: every interaction triggers a re-run, but for a
+    # playground that's fine.
+    system_prompt = st.text_area(
+        "System prompt (optional)",
+        value=st.session_state.get("system_prompt_value", DEFAULT_SYSTEM),
+        height=80,
+        help="Sets the model's role / instructions. Leave blank to skip.",
+        key="system_prompt_input",
+    )
+    user_prompt = st.text_area(
+        "User prompt",
+        value=st.session_state.get("user_prompt_value", DEFAULT_USER),
+        height=100,
+        key="user_prompt_input",
+    )
+    run = st.button("Run all 3 variants")
+
+    # Persist the current values so they survive re-runs.
+    st.session_state["system_prompt_value"] = system_prompt
+    st.session_state["user_prompt_value"] = user_prompt
 
     if not run:
         return
@@ -150,14 +159,15 @@ def main() -> None:
             elif not out:
                 st.warning("Empty response after stripping thinking tokens.")
             else:
-                # text_area keeps the original UI. Tall enough height to
-                # hold ~50 lines without scrolling; longer outputs scroll inside.
+                # disabled=True ensures the text_area always shows the current
+                # value (no Streamlit state caching). Still selectable/copyable.
                 st.text_area(
                     "Output",
                     value=out,
                     height=600,
                     key=f"out_{temp}",
                     label_visibility="collapsed",
+                    disabled=True,
                 )
                 st.caption(f"Latency: {lat:.2f}s  |  Tokens: {tok}")
 
