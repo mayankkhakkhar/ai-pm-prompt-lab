@@ -125,10 +125,15 @@ def main() -> None:
             elif not out:
                 st.warning("Empty response after stripping thinking tokens.")
             else:
-                # st.markdown renders the model's markdown output properly:
-                # headers, tables, bold, code blocks all display correctly.
-                # Full content is shown (no fixed-height truncation).
-                st.markdown(out)
+                # text_area keeps the original UI. Tall enough height to
+                # hold ~50 lines without scrolling; longer outputs scroll inside.
+                st.text_area(
+                    "Output",
+                    value=out,
+                    height=600,
+                    key=f"out_{temp}",
+                    label_visibility="collapsed",
+                )
                 st.caption(f"Latency: {lat:.2f}s  |  Tokens: {tok}")
 
 
