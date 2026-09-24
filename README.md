@@ -14,24 +14,21 @@ Phase 1 of an 8-week AI PM sprint. A prompt playground + eval harness built to d
 2. **Set up API keys**
    ```bash
    cp .env.example .env
-   # Then edit .env and fill in your real keys
+   # Then edit .env and fill in your real key
    ```
    - `MINIMAX_API_KEY` — get from the MiniMax platform dashboard
-   - `GEMINI_API_KEY` — get from [Google AI Studio](https://aistudio.google.com/) (free tier is generous)
 
-3. **Verify both providers work**
+3. **Verify the API works**
    ```bash
    python hello_minimax.py
-   python hello_gemini.py
    ```
-   If both print a 5-word greeting, your setup is correct.
+   If it prints a 5-word greeting, your setup is correct.
 
 ## What's being built here
 
 | Component | Purpose | Status |
 |---|---|---|
-| `hello_minimax.py` | Day 1 sanity check (MiniMax) | ✅ Day 1 |
-| `hello_gemini.py` | Day 1 sanity check (Gemini) | ✅ Day 1 |
+| `hello_minimax.py` | Day 1 sanity check | ✅ Day 1 |
 | Prompt playground | Swap prompts, compare outputs | 🚧 Days 3-4 |
 | Eval harness | Run prompts against test sets | 🚧 Days 5-6 |
 | Experiments | Temperature, system prompt, cost | 🚧 Days 7-8 |
@@ -40,8 +37,7 @@ Phase 1 of an 8-week AI PM sprint. A prompt playground + eval harness built to d
 
 ```
 ai-pm-prompt-lab/
-├── hello_minimax.py        # First call — MiniMax
-├── hello_gemini.py         # First call — Gemini
+├── hello_minimax.py        # First call to MiniMax
 ├── requirements.txt
 ├── .env.example
 ├── .gitignore
