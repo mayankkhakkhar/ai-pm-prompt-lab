@@ -57,7 +57,7 @@ def get_client_and_model() -> tuple[OpenAI | None, str]:
     return client, model
 
 
-def call_variant(client: OpenAI, model: str, messages: list[dict], temperature: float) -> tuple[str, float, int, str | None]:
+def call_variant(client: OpenAI, model: str, messages: list[dict], temperature: float, max_tokens: int) -> tuple[str, float, int, str | None]:
     """Run one variant. Returns (clean_output, latency_s, tokens, error_or_None)."""
     try:
         start = time.time()
@@ -65,7 +65,7 @@ def call_variant(client: OpenAI, model: str, messages: list[dict], temperature: 
             model=model,
             messages=messages,
             temperature=temperature,
-            max_tokens=300,
+            max_tokens=max_tokens,
         )
         raw = response.choices[0].message.content
         clean = strip_thinking(raw)
@@ -93,6 +93,15 @@ def main() -> None:
         options=AVAILABLE_MODELS,
         index=AVAILABLE_MODELS.index(default_model) if default_model in AVAILABLE_MODELS else 0,
         help="Default is from .env (MINIMAX_MODEL). highspeed variants use less reasoning budget.",
+    )
+
+    max_tokens = st.slider(
+        "Max output tokens per variant",
+        min_value=100,
+        max_value=2000,
+        value=800,
+        step=100,
+        help="Cap on the model's response length. Higher = more complete answers, more cost, more latency.",
     )
 
     # ── Input form ───────────────────────────────────────────────────────────
@@ -127,7 +136,7 @@ def main() -> None:
     results: list[tuple[str, float, str, float, int, str | None]] = []
     for i, (label, temp) in enumerate(VARIANTS, 1):
         progress.progress((i - 1) / len(VARIANTS), f"Running {label}...")
-        out, lat, tok, err = call_variant(client, model, messages, temp)
+        out, lat, tok, err = call_variant(client, model, messages, temp, max_tokens)
         results.append((label, temp, out, lat, tok, err))
     progress.progress(1.0, "Done.")
 
