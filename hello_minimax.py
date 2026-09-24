@@ -15,7 +15,7 @@ client = OpenAI(
     base_url=os.environ.get("MINIMAX_BASE_URL", "https://api.MiniMax.chat/v1"),
 )
 
-model = os.environ.get("MINIMAX_MODEL", "MiniMax-M3")
+model = os.environ.get("MINIMAX_MODEL", "MiniMax-M2.7")
 
 response = client.chat.completions.create(
     model=model,
