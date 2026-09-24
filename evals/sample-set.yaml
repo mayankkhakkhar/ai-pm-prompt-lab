@@ -1,0 +1,180 @@
+# Eval set for Phase 1's prompt lab.
+#
+# How to use:
+#   python run_eval.py                       # run all cases
+#   python run_eval.py --case greeting_5_words   # one case
+#   python run_eval.py --no-judge                # skip LLM-judge (faster)
+#
+# How to add a case:
+#   Copy any block below, change the id, input, expected, scorer.
+#   The runner picks up changes on next run — no Python edit needed.
+#
+# Scorer cheat-sheet:
+#   exact       — whole-string match (case-insensitive)
+#   contains    — substring match (case-insensitive)
+#   regex       — regex match anywhere in output
+#   word_count  — count whitespace-separated words
+#   bullet_count — count lines starting with -, *, •, 1., 2.
+#   json_valid  — parse JSON, check required_keys
+#   llm_judge   — extra API call; judge passes/fails against criteria
+#
+# Each case has:
+#   id          — unique string used in output
+#   description — human-readable (not used by runner)
+#   input.system — optional system prompt
+#   input.user   — required user prompt
+#   expected    — what the scorer checks against (format depends on scorer)
+#   scorer      — which scorer to use
+
+cases:
+
+  # ────────────────────────────────────────────────────────────────────
+  # Constraint following (simple scorers)
+  # ────────────────────────────────────────────────────────────────────
+
+  - id: greeting_5_words
+    description: Model says hello in exactly 5 words
+    input:
+      system: You are a friendly assistant.
+      user: Say hello in exactly 5 words.
+    expected:
+      type: word_count
+      value: 5
+      tolerance: 0
+    scorer: word_count
+
+  # ────────────────────────────────────────────────────────────────────
+  # Knowledge retrieval
+  # ────────────────────────────────────────────────────────────────────
+
+  - id: capital_france
+    description: Knows basic world geography
+    input:
+      system: You are a helpful assistant. Reply with just the answer, no explanation.
+      user: What is the capital of France?
+    expected:
+      type: exact
+      value: Paris
+    scorer: contains
+
+  - id: largest_planet
+    description: Knows basic astronomy
+    input:
+      system: You are a helpful assistant. Reply with just the answer, no explanation.
+      user: Which planet is the largest in our solar system?
+    expected:
+      type: exact
+      value: Jupiter
+    scorer: contains
+
+  # ────────────────────────────────────────────────────────────────────
+  # Extraction (regex)
+  # ────────────────────────────────────────────────────────────────────
+
+  - id: extract_email
+    description: Extracts email from prose
+    input:
+      user: |
+        Extract the email address from this text. Reply with just the email.
+        Text: "Please reach out to jane.smith@company.co.uk for more information."
+    expected:
+      type: regex
+      value: '[\w.-]+@[\w.-]+\.\w+'
+    scorer: regex
+
+  # ────────────────────────────────────────────────────────────────────
+  # Classification
+  # ────────────────────────────────────────────────────────────────────
+
+  - id: sentiment_positive
+    description: Classifies positive sentiment
+    input:
+      system: "Classify sentiment. Reply with exactly one word: positive, negative, or neutral."
+      user: "I absolutely love this product!"
+    expected:
+      type: exact
+      value: positive
+    scorer: contains
+
+  # ────────────────────────────────────────────────────────────────────
+  # Format following
+  # ────────────────────────────────────────────────────────────────────
+
+  - id: summarize_3_bullets
+    description: Summarizes in exactly 3 bullet points
+    input:
+      system: You are a concise summarizer. Always reply with exactly 3 bullet points, no more, no less.
+      user: |
+        Summarize in exactly 3 bullet points:
+        "Remote work has transformed how teams collaborate. It offers flexibility
+        but also creates challenges around communication and company culture.
+        Companies are now adopting hybrid models to balance benefits and drawbacks."
+    expected:
+      type: bullet_count
+      value: 3
+      tolerance: 0
+    scorer: bullet_count
+
+  - id: json_formatting
+    description: Outputs valid JSON with required keys
+    input:
+      system: You format data as JSON. Always reply with valid JSON only — no prose.
+      user: |
+        Format as JSON: name=Alice, age=30, role=Engineer
+    expected:
+      type: json_schema
+      required_keys: [name, age, role]
+    scorer: json_valid
+
+  # ────────────────────────────────────────────────────────────────────
+  # LLM-judged (qualitative — extra API call per case)
+  # ────────────────────────────────────────────────────────────────────
+
+  - id: explain_concept
+    description: Explains compound interest clearly for a child
+    input:
+      system: You are a clear explainer. Reply directly with the answer — no preamble, no "let me think".
+      user: Explain compound interest in 2 sentences for a 10-year-old.
+    expected:
+      type: rubric
+      criteria:
+        - factually accurate
+        - language is age-appropriate for a 10-year-old
+        - uses an analogy or concrete example
+    scorer: llm_judge
+
+  - id: compare_options_balanced
+    description: Compares iPhone vs Android without favoring either
+    input:
+      system: You are a balanced tech writer. Reply directly with the comparison — no preamble.
+      user: |
+        Compare iPhone vs Android for a first-time smartphone buyer in 3-4 sentences.
+        Be balanced — don't favor either platform.
+    expected:
+      type: rubric
+      criteria:
+        - mentions pros and cons of both
+        - appropriate for someone buying their first smartphone
+        - balanced (no clear preference stated)
+    scorer: llm_judge
+
+  - id: meeting_summary
+    description: Summarizes a meeting transcript into action items
+    input:
+      system: |
+        You extract action items from meeting transcripts.
+        Include ALL commitments — both tasks assigned to specific people AND team-level decisions.
+        For each item, capture: what will happen, by when, by whom (or "team" if collective).
+        Reply directly with the list — no preamble.
+      user: |
+        Extract action items from this meeting transcript. List each with owner if mentioned.
+        Transcript: "Sarah will send the Q3 deck by Friday. Mike mentioned the API launch
+        is slipping to October 15. We agreed to revisit pricing in next week's sync.
+        The team decided to postpone the design review until after the launch."
+    expected:
+      type: rubric
+      criteria:
+        - identifies at least 3 distinct action items
+        - assigns owners when mentioned in the transcript
+        - uses a clear format (bullets or numbered list)
+    scorer: llm_judge
