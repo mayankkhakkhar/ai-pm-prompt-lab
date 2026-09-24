@@ -5,7 +5,8 @@ Usage:
     python run_eval.py --case greeting_5_words   # run one case
     python run_eval.py --no-judge         # skip LLM-judge cases (faster, cheaper)
     python run_eval.py --evals path/to/set.yaml  # use a different eval set
-    python run_eval.py --judge-model MiniMax-M3   # use a different model for LLM-judge calls
+    python run_eval.py --model MiniMax-M3          # test model (default: $MINIMAX_MODEL)
+    python run_eval.py --judge-model MiniMax-M3    # judge model (default: same as test model)
 """
 import argparse
 import os
@@ -110,6 +111,9 @@ def main():
     parser.add_argument("--judge-model", type=str, default=None,
                         help="Model to use for LLM-judge calls (defaults to test model). "
                              "Use this to evaluate M2.7 with a stronger judge like MiniMax-M3.")
+    parser.add_argument("--model", type=str, default=None,
+                        help="Model to evaluate (defaults to $MINIMAX_MODEL or MiniMax-M2.7). "
+                             "Used to test different models against the same eval set.")
     args = parser.parse_args()
 
     load_dotenv()
@@ -118,7 +122,8 @@ def main():
         raise SystemExit("MINIMAX_API_KEY not set — copy .env.example to .env and add your key.")
 
     base_url = os.environ.get("MINIMAX_BASE_URL", "https://api.minimax.io/v1")
-    model = os.environ.get("MINIMAX_MODEL", "MiniMax-M2.7")
+    # CLI --model overrides env, which overrides the default
+    model = args.model or os.environ.get("MINIMAX_MODEL", "MiniMax-M2.7")
     client = OpenAI(api_key=api_key, base_url=base_url)
 
     cases = load_eval_set(args.evals)
