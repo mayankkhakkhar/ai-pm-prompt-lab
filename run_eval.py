@@ -44,8 +44,9 @@ def call_model(client: OpenAI, model: str, case: dict, max_tokens: int = 300) ->
     if system := case.get("input", {}).get("system"):
         messages.append({"role": "system", "content": system})
     user_msg = case.get("input", {}).get("user")
-    if not user_msg:
-        raise ValueError(f"Case {case.get('id')!r} has no user message")
+    if user_msg is None:
+        raise ValueError(f"Case {case.get('id')!r} has no user message field")
+    # Empty string is allowed (used by edge cases like edge_empty_input)
     messages.append({"role": "user", "content": user_msg})
 
     start = time.time()

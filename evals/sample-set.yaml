@@ -178,3 +178,265 @@ cases:
         - assigns owners when mentioned in the transcript
         - uses a clear format (bullets or numbered list)
     scorer: llm_judge
+
+  # ────────────────────────────────────────────────────────────────────
+  # Health insurance (PM-flavored — from your domain)
+  # ────────────────────────────────────────────────────────────────────
+
+  - id: hi_deductible_explanation
+    description: Explains deductible + out-of-pocket max to a customer
+    input:
+      system: You are a helpful health insurance assistant. Reply directly, customer-friendly.
+      user: |
+        Explain the difference between a deductible and an out-of-pocket maximum
+        to a customer who has a $2,000 deductible and a $6,000 out-of-pocket max.
+        Keep it under 100 words.
+    expected:
+      type: rubric
+      criteria:
+        - clearly distinguishes deductible from out-of-pocket max
+        - uses the customer's actual numbers ($2,000 and $6,000)
+        - language is plain enough for someone unfamiliar with insurance
+        - mentions that after OOP max is met, the plan covers 100%
+    scorer: llm_judge
+
+  - id: hi_copay_vs_coinsurance
+    description: Explains the difference between copay and coinsurance
+    input:
+      system: You are a helpful health insurance assistant. Reply directly.
+      user: |
+        What's the difference between a copay and coinsurance? Use an example
+        with numbers. Keep it under 80 words.
+    expected:
+      type: rubric
+      criteria:
+        - copay is a fixed dollar amount per visit/service
+        - coinsurance is a percentage of the cost after the deductible
+        - includes a concrete example with both numbers
+        - customer-friendly language
+    scorer: llm_judge
+
+  - id: hi_in_network_status
+    description: Determines if a doctor visit is in-network
+    input:
+      system: |
+        You help customers understand their health insurance coverage.
+        Reply with just the answer — in-network or out-of-network — plus one short reason.
+      user: |
+        I have a PPO plan. I want to see Dr. Smith who is listed as a participating
+        provider with my insurance but the office is in another state. Is this
+        visit in-network?
+    expected:
+      type: contains
+      value: in-network
+    scorer: contains
+
+  - id: hi_denial_reason_extraction
+    description: Extracts the reason for a claim denial
+    input:
+      system: You are a claims processing assistant. Reply with just the denial reason.
+      user: |
+        Extract the denial reason from this letter. Reply with just the reason, in one sentence.
+        Letter: "Dear Member, your claim dated 03/15/2026 for procedure code 99214 has been
+        denied because the service was provided by an out-of-network provider and prior
+        authorization was not obtained. You have the right to appeal this decision within
+        180 days."
+    expected:
+      type: rubric
+      criteria:
+        - identifies out-of-network provider as the reason
+        - identifies missing prior authorization as a reason
+        - mentions the 180-day appeal window
+        - concise (one or two sentences)
+    scorer: llm_judge
+
+  - id: hi_eob_summary
+    description: Summarizes an EOB (Explanation of Benefits) in 3 bullets
+    input:
+      system: |
+        You summarize Explanation of Benefits (EOB) documents for customers.
+        Reply with exactly 3 bullet points. No preamble.
+      user: |
+        Summarize this EOB in exactly 3 bullet points:
+        "Patient: Jane Doe. Date of service: 09/10/2026. Provider: Westside Medical.
+        Billed amount: $850. Plan discount: $200. Plan paid: $480. Patient responsibility:
+        $170 (applied to deductible: $170). Claim status: Processed. Network status: In-network."
+    expected:
+      type: bullet_count
+      value: 3
+      tolerance: 0
+    scorer: bullet_count
+
+  - id: hi_preauth_requirement
+    description: Determines if a procedure typically requires prior authorization
+    input:
+      system: You are a health insurance benefits assistant. Reply directly.
+      user: Does an MRI of the knee typically require prior authorization under a standard PPO plan?
+    expected:
+      type: rubric
+      criteria:
+        - states that MRI typically requires prior authorization
+        - mentions the patient should check with their specific plan
+        - explains what prior authorization is (insurance company approves before service)
+        - customer-friendly language
+    scorer: llm_judge
+
+  - id: hi_formulary_tier
+    description: Categorizes a medication by formulary tier
+    input:
+      system: |
+        You categorize medications by typical formulary tier.
+        Reply with just the tier name: generic, preferred brand, non-preferred brand, or specialty.
+      user: What formulary tier is metformin typically on?
+    expected:
+      type: contains
+      value: generic
+    scorer: contains
+
+  - id: hi_appeal_process
+    description: Explains the appeal process for a denied claim
+    input:
+      system: You are a helpful health insurance assistant. Reply directly.
+      user: |
+        My insurance denied my claim. Walk me through the appeal process step by step.
+        Keep it under 150 words.
+    expected:
+      type: rubric
+      criteria:
+        - mentions checking the EOB/denial letter first
+        - mentions the appeal deadline (typically 180 days)
+        - mentions contacting the insurance company in writing
+        - mentions providing supporting documentation
+        - mentions the right to an external review if internal appeal fails
+        - clear step-by-step format
+    scorer: llm_judge
+
+  - id: hi_preventive_care_coverage
+    description: Explains what's covered as preventive care
+    input:
+      system: You are a helpful health insurance assistant. Reply directly.
+      user: |
+        What types of care are typically covered as preventive under a standard
+        health plan (ACA-compliant)? List at least 4 examples.
+    expected:
+      type: rubric
+      criteria:
+        - mentions annual wellness visits
+        - mentions recommended screenings (e.g., mammograms, colonoscopies)
+        - mentions immunizations/vaccines
+        - mentions that preventive care is covered at no cost (no copay)
+        - lists at least 4 distinct examples
+    scorer: llm_judge
+
+  - id: hi_policy_number_extraction
+    description: Extracts a policy number from a document
+    input:
+      system: You extract policy numbers from insurance documents. Reply with just the number.
+      user: |
+        Extract the policy number. Reply with just the number.
+        Document: "Member: John Smith. Policy Number: BCA-2026-44891-X. Group: 44712.
+        Effective date: 01/01/2026."
+    expected:
+      type: contains
+      value: BCA-2026-44891-X
+    scorer: contains
+
+  # ────────────────────────────────────────────────────────────────────
+  # Variance variants — same skill, different inputs (for reliability)
+  # ────────────────────────────────────────────────────────────────────
+
+  - id: summarize_3_bullets_climate
+    description: Summarizes climate policy text in exactly 3 bullet points
+    input:
+      system: You are a concise summarizer. Always reply with exactly 3 bullet points, no more, no less.
+      user: |
+        Summarize in exactly 3 bullet points:
+        "Carbon pricing mechanisms like carbon taxes and cap-and-trade systems aim
+        to internalize the cost of emissions. They have been implemented in over
+        60 jurisdictions worldwide. Critics argue they disproportionately affect
+        lower-income households, while proponents point to measurable emission
+        reductions in regions with sustained pricing."
+    expected:
+      type: bullet_count
+      value: 3
+      tolerance: 0
+    scorer: bullet_count
+
+  - id: extract_email_alt_format
+    description: Extracts an email with subdomain
+    input:
+      user: |
+        Extract the email address from this text. Reply with just the email.
+        Text: "For media inquiries, contact press@newsroom.example-corp.com directly."
+    expected:
+      type: contains
+      value: press@newsroom.example-corp.com
+    scorer: contains
+
+  - id: sentiment_neutral
+    description: Classifies neutral sentiment
+    input:
+      system: "Classify sentiment. Reply with exactly one word: positive, negative, or neutral."
+      user: "The package arrived on Tuesday. It was the size I expected."
+    expected:
+      type: contains
+      value: neutral
+    scorer: contains
+
+  # ────────────────────────────────────────────────────────────────────
+  # Edge cases — adversarial / unusual inputs
+  # ────────────────────────────────────────────────────────────────────
+
+  - id: edge_empty_input
+    description: Handles empty user input gracefully
+    input:
+      system: You are a helpful assistant. If the user input is empty or unclear, ask for clarification.
+      user: ""
+    expected:
+      type: rubric
+      criteria:
+        - does not hallucinate a question or make up an answer
+        - asks the user for clarification or input
+        - is brief (1-2 sentences)
+    scorer: llm_judge
+
+  - id: edge_contradictory_instructions
+    description: Handles contradictory system + user instructions
+    input:
+      system: Reply in one sentence maximum. Be very brief.
+      user: |
+        Please write a detailed 500-word essay about the history of the internet,
+        including all major milestones from ARPANET to modern broadband.
+    expected:
+      type: rubric
+      criteria:
+        - acknowledges the contradiction between system and user instructions
+        - either follows one constraint and explains, or asks for clarification
+        - does not silently ignore the contradiction
+        - is honest about the trade-off
+    scorer: llm_judge
+
+  - id: edge_very_long_input
+    description: Produces coherent output for a very long input
+    input:
+      system: You summarize long documents in 3 bullet points.
+      user: |
+        Summarize the following in 3 bullet points:
+        "The healthcare industry is undergoing a massive digital transformation driven by
+        electronic health records, telemedicine, AI-powered diagnostics, and value-based
+        care models. EHR adoption has reached over 96% of US hospitals, but interoperability
+        remains a challenge with over 700 different certified products in use. Telemedicine
+        usage spiked during the COVID-19 pandemic and has stabilized at levels 38x higher
+        than pre-pandemic. AI diagnostics are showing promising results in radiology,
+        pathology, and ophthalmology, with FDA approvals for over 500 AI/ML medical devices
+        as of 2024. Value-based care, which ties payment to patient outcomes rather than
+        service volume, now accounts for over 40% of healthcare payments. Privacy concerns
+        around patient data have intensified, with HIPAA enforcement actions increasing
+        year over year. The workforce shortage in healthcare, particularly in nursing and
+        primary care, is driving increased investment in AI-powered clinical decision
+        support tools."
+    expected:
+      type: bullet_count
+      value: 3
+      tolerance: 0
+    scorer: bullet_count

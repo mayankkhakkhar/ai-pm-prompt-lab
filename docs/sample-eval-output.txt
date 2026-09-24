@@ -1,23 +1,63 @@
-Loaded 10 case(s) from sample-set.yaml
+Loaded 26 case(s) from sample-set.yaml
 Model: MiniMax-M2.7
 Judge model: MiniMax-M3
 Judge calls: enabled
 
 STATUS CASE                           TIME  TOKENS  DETAIL
 ----------------------------------------------------------------------------------------------------
-[PASS] greeting_5_words               3.2s      94  got 5 words, expected 5 (+/-0)
-[PASS] capital_france                 1.2s      67  looking for 'paris' in 'paris'
-[PASS] largest_planet                 1.5s      98  looking for 'jupiter' in 'jupiter'
-[PASS] extract_email                  2.4s     167  matched='jane.smith@company.co.uk'
-[PASS] sentiment_positive             1.3s      64  looking for 'positive' in 'positive'
-[PASS] summarize_3_bullets            2.4s     188  got 3 bullets, expected 3 (+/-0)
-[PASS] json_formatting                2.1s     122  valid JSON with keys ['name', 'age', 'role']
-[PASS] explain_concept                1.9s     127  judge (PASS): The response is factually accurate, uses si...
-[PASS] compare_options_balanced       6.3s     299  judge (PASS): The response covers pros and cons of both p...
-[PASS] meeting_summary                4.7s     380  judge (PASS): All criteria are satisfied: four distinct i...
+[FAIL] greeting_5_words              11.9s     656  got 0 words, expected 5 (+/-0)
+[PASS] capital_france                 3.0s     169  looking for 'paris' in 'paris'
+[PASS] largest_planet                 1.9s      93  looking for 'jupiter' in 'jupiter'
+[PASS] extract_email                  2.6s     169  matched='jane.smith@company.co.uk'
+[PASS] sentiment_positive             1.4s      74  looking for 'positive' in 'positive'
+[PASS] summarize_3_bullets            2.5s     184  got 3 bullets, expected 3 (+/-0)
+[PASS] json_formatting                1.7s     120  valid JSON with keys ['name', 'age', 'role']
+[FAIL] explain_concept                3.4s     194  judge (FAIL): The explanation is clear and age-appropriate but
+[PASS] compare_options_balanced       7.8s     311  judge (PASS): The response mentions advantages of both pl...
+[FAIL] meeting_summary                3.5s     300  judge (FAIL): ng the requirement to identify at least three distinct action items.
+[PASS] hi_deductible_explanation      5.2s     314  judge (PASS): The response clearly distinguishes deductib...
+[FAIL] hi_copay_vs_coinsurance       12.0s     700  judge (FAIL): The response is empty and does not contain any information about copay, coinsurance, examples, or cu
+[PASS] hi_in_network_status           6.4s     362  looking for 'in-network' in 'in-network\n\nparticipating ...
+[FAIL] hi_denial_reason_extraction    1.9s     182  judge (FAIL): The response identifies both reasons but omits the required 180-day appeal window.
+[PASS] hi_eob_summary                 4.9s     359  got 3 bullets, expected 3 (+/-0)
+[FAIL] hi_preauth_requirement        13.4s     684  judge (FAIL): The response is empty and does not address any of the required criteria.
+[PASS] hi_formulary_tier              3.6s     132  looking for 'generic' in 'generic'
+[FAIL] hi_appeal_process              5.8s     265  judge: no response after 3 attempts (attempt 3 returned empty)
+[FAIL] hi_preventive_care_coverage   15.0s     702  judge (FAIL): The response is empty and does not mention any required elements.
+[PASS] hi_policy_number_extraction    2.1s     173  looking for 'bca-2026-44891-x' in 'bca-2026-44891-x'
+[PASS] summarize_3_bullets_climate    4.1s     235  got 3 bullets, expected 3 (+/-0)
+[PASS] extract_email_alt_format       3.2s     222  looking for 'press@newsroom.example-corp.com' in 'press@n...
+[PASS] sentiment_neutral              3.0s     177  looking for 'neutral' in 'neutral'
+[FAIL] edge_empty_input               2.2s     100  judge (FAIL): Line 2: The response is 4 sentences long, exceeding the 1-2 sentence brevity requirement.
+[FAIL] edge_contradictory_instructions   5.2s     351  judge (FAIL): The response provides only internet history content and does not acknowledge, address, or explain an
+[FAIL] edge_very_long_input           6.3s     525  got 2 bullets, expected 3 (+/-0)
 
 ============================================================
-Pass rate:    10/10 (100%)
-Avg latency:  2.71s per case
-Total tokens: 1,606
+Pass rate:    15/26 (58%)
+Avg latency:  5.16s per case
+Total tokens: 7,753
 ============================================================
+
+Failures (full detail):
+  [greeting_5_words]
+    got 0 words, expected 5 (+/-0)
+  [explain_concept]
+    judge (FAIL): The explanation is clear and age-appropriate but
+  [meeting_summary]
+    judge (FAIL): ng the requirement to identify at least three distinct action items.
+  [hi_copay_vs_coinsurance]
+    judge (FAIL): The response is empty and does not contain any information about copay, coinsurance, examples, or cu
+  [hi_denial_reason_extraction]
+    judge (FAIL): The response identifies both reasons but omits the required 180-day appeal window.
+  [hi_preauth_requirement]
+    judge (FAIL): The response is empty and does not address any of the required criteria.
+  [hi_appeal_process]
+    judge: no response after 3 attempts (attempt 3 returned empty)
+  [hi_preventive_care_coverage]
+    judge (FAIL): The response is empty and does not mention any required elements.
+  [edge_empty_input]
+    judge (FAIL): Line 2: The response is 4 sentences long, exceeding the 1-2 sentence brevity requirement.
+  [edge_contradictory_instructions]
+    judge (FAIL): The response provides only internet history content and does not acknowledge, address, or explain an
+  [edge_very_long_input]
+    got 2 bullets, expected 3 (+/-0)
