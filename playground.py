@@ -125,13 +125,9 @@ def main() -> None:
             elif not out:
                 st.warning("Empty response after stripping thinking tokens.")
             else:
-                st.text_area(
-                    "Output",
-                    value=out,
-                    height=350,
-                    key=f"out_{temp}",
-                    label_visibility="collapsed",
-                )
+                # st.code renders full content (no fixed-height truncation),
+                # adds a built-in copy button, and looks like raw model output.
+                st.code(out, language=None, wrap_lines=True)
                 st.caption(f"Latency: {lat:.2f}s  |  Tokens: {tok}")
 
 
