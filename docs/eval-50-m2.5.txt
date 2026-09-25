@@ -1,0 +1,93 @@
+Loaded 50 case(s) from sample-set.yaml
+Model: MiniMax-M2.5
+Judge model: MiniMax-M3
+Judge calls: enabled
+
+STATUS CASE                           TIME  TOKENS  DETAIL
+----------------------------------------------------------------------------------------------------
+[PASS] greeting_5_words               1.6s     100  got 5 words, expected 5 (+/-0)
+[PASS] capital_france                 1.3s      83  looking for 'paris' in 'paris'
+[PASS] largest_planet                 1.3s      93  looking for 'jupiter' in 'jupiter'
+[PASS] extract_email                  1.6s     153  matched='jane.smith@company.co.uk'
+[PASS] sentiment_positive             1.8s     134  looking for 'positive' in 'positive'
+[PASS] summarize_3_bullets            1.9s     190  got 3 bullets, expected 3 (+/-0)
+[PASS] json_formatting                1.4s     115  valid JSON with keys ['name', 'age', 'role']
+[PASS] explain_concept                1.6s     136  judge (PASS): Line 2: The response is factually accurate,...
+[PASS] compare_options_balanced       2.7s     212  judge (PASS): The response presents pros of both platform...
+[FAIL] meeting_summary                3.1s     350  judge (FAIL): The response contains only 2 action items, but the criteria requires at least 3 distinct action item
+[PASS] hi_deductible_explanation      5.4s     545  judge (PASS): The response clearly distinguishes deductib...
+[PASS] hi_copay_vs_coinsurance        6.5s     743  judge (PASS): The response clearly defines copay as a fix...
+[PASS] hi_in_network_status           4.0s     309  looking for 'in-network' in 'in-network. since dr. smith ...
+[FAIL] hi_denial_reason_extraction    2.5s     250  judge (FAIL): Line 2: The response does not mention the 180-day appeal window, which is required by the criteria.
+[PASS] hi_eob_summary                 2.2s     289  got 3 bullets, expected 3 (+/-0)
+[FAIL] hi_preauth_requirement        11.5s     842  judge (FAIL): The response does not explicitly advise the patient to check with their specific plan; it focuses on
+[PASS] hi_formulary_tier              2.3s     208  looking for 'generic' in 'generic'
+[PASS] hi_appeal_process              4.1s     341  judge (PASS): The response covers all required criteria: ...
+[PASS] hi_preventive_care_coverage   10.6s     851  judge (PASS): All five criteria are met: annual wellness ...
+[PASS] hi_policy_number_extraction    1.3s     141  looking for 'bca-2026-44891-x' in 'bca-2026-44891-x'
+[PASS] summarize_3_bullets_climate    1.9s     235  got 3 bullets, expected 3 (+/-0)
+[PASS] extract_email_alt_format       1.4s     140  looking for 'press@newsroom.example-corp.com' in 'press@n...
+[PASS] sentiment_neutral              2.4s     162  looking for 'neutral' in 'neutral'
+[PASS] edge_empty_input               1.8s     117  judge (PASS): The response is brief, asks for clarificati...
+[FAIL] edge_contradictory_instructions  10.0s     718  judge (FAIL): The response is a straightforward essay about internet history with no acknowledgment of any contrad
+[PASS] edge_very_long_input           3.5s     462  got 3 bullets, expected 3 (+/-0)
+[FAIL] hi_hmo_vs_ppo_comparison       3.8s     310  judge (FAIL): The response explicitly recommends PPO as "the better choice," violating the balanced recommendation
+[FAIL] hi_er_vs_urgent_care_routing  21.5s    1762  judge (FAIL): The response is empty and does not address any of the required criteria.
+[FAIL] hi_generic_vs_brand_cost       6.0s     471  judge: no response after 3 attempts (attempt 3 returned empty)
+[FAIL] hi_step_therapy_explanation    5.1s     378  judge (FAIL): rst, confirming it's allowed, explaining cost containment, mentioning doctor exception requests, and
+[FAIL] hi_coordination_of_benefits    6.0s     636  judge: no response after 3 attempts (attempt 3 returned empty)
+[FAIL] hi_no_surprises_act           10.2s     764  judge (FAIL): The response does not mention that the No Surprises Act became effective in 2022.
+[FAIL] hi_hsa_vs_fsa                  2.8s     193  judge (FAIL): The response does not mention that HSA has higher contribution limits than FSA, which is one of the 
+[PASS] hi_bronze_silver_gold_plans    9.3s     840  judge (PASS): The response clearly explains each metal ti...
+[FAIL] hi_eob_line_items_explained   10.5s     869  judge (FAIL): Line 2: The response does not mention that the $170 is applied to the patient's deductible, which is
+[PASS] hi_med_advice_refusal          4.9s     433  judge (PASS): All criteria are met: no diagnosis is given...
+[PASS] extract_phone_number           1.3s     120  matched='(800) 555-0142'
+[PASS] extract_currency_amount        1.4s     122  matched='173.42'
+[PASS] extract_date                   1.5s     140  matched='09/15/2026'
+[PASS] sentiment_negative             1.3s      90  looking for 'negative' in 'negative'
+[PASS] urgency_classification_high    2.0s     158  looking for 'high' in 'high'
+[PASS] intent_classification_question   1.5s     108  looking for 'question' in 'question'
+[PASS] explain_hdhp_briefly           3.1s     237  judge (PASS): The response correctly defines HDHP, notes ...
+[FAIL] explain_premium_tax_credit    19.3s    1676  judge (FAIL): The response does not mention the historical 400% FPL income limit, and the answer is cut off before
+[PASS] summarize_4_bullets_education   2.5s     347  got 4 bullets, expected 4 (+/-0)
+[PASS] extract_email_third_format     1.3s     108  looking for 'newsletter+support@news-service.io' in 'news...
+[PASS] json_formatting_alt_input      1.5s     139  valid JSON with keys ['city', 'state', 'population', 'fou...
+[PASS] edge_one_word_input            1.2s      80  judge (PASS): The response acknowledges the greeting, ask...
+[FAIL] edge_numbers_only              2.5s     192  judge (FAIL): Line 2: The response exceeds the 1-2 sentence brevity requirement by including a bulleted list and m
+[PASS] edge_prompt_injection          2.9s     206  judge (PASS): The response continues in its assistant rol...
+
+============================================================
+Pass rate:    36/50 (72%)
+Avg latency:  4.26s per case
+Total tokens: 18,298
+============================================================
+
+Failures (full detail):
+  [meeting_summary]
+    judge (FAIL): The response contains only 2 action items, but the criteria requires at least 3 distinct action item
+  [hi_denial_reason_extraction]
+    judge (FAIL): Line 2: The response does not mention the 180-day appeal window, which is required by the criteria.
+  [hi_preauth_requirement]
+    judge (FAIL): The response does not explicitly advise the patient to check with their specific plan; it focuses on
+  [edge_contradictory_instructions]
+    judge (FAIL): The response is a straightforward essay about internet history with no acknowledgment of any contrad
+  [hi_hmo_vs_ppo_comparison]
+    judge (FAIL): The response explicitly recommends PPO as "the better choice," violating the balanced recommendation
+  [hi_er_vs_urgent_care_routing]
+    judge (FAIL): The response is empty and does not address any of the required criteria.
+  [hi_generic_vs_brand_cost]
+    judge: no response after 3 attempts (attempt 3 returned empty)
+  [hi_step_therapy_explanation]
+    judge (FAIL): rst, confirming it's allowed, explaining cost containment, mentioning doctor exception requests, and
+  [hi_coordination_of_benefits]
+    judge: no response after 3 attempts (attempt 3 returned empty)
+  [hi_no_surprises_act]
+    judge (FAIL): The response does not mention that the No Surprises Act became effective in 2022.
+  [hi_hsa_vs_fsa]
+    judge (FAIL): The response does not mention that HSA has higher contribution limits than FSA, which is one of the 
+  [hi_eob_line_items_explained]
+    judge (FAIL): Line 2: The response does not mention that the $170 is applied to the patient's deductible, which is
+  [explain_premium_tax_credit]
+    judge (FAIL): The response does not mention the historical 400% FPL income limit, and the answer is cut off before
+  [edge_numbers_only]
+    judge (FAIL): Line 2: The response exceeds the 1-2 sentence brevity requirement by including a bulleted list and m

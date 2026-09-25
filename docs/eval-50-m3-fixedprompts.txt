@@ -1,0 +1,79 @@
+Loaded 50 case(s) from sample-set.yaml
+Model: MiniMax-M3
+Judge model: MiniMax-M3
+Judge calls: enabled
+
+STATUS CASE                           TIME  TOKENS  DETAIL
+----------------------------------------------------------------------------------------------------
+[PASS] greeting_5_words               2.1s     326  got 5 words, expected 5 (+/-0)
+[PASS] capital_france                 0.9s     229  looking for 'paris' in 'paris'
+[PASS] largest_planet                 0.8s     231  looking for 'jupiter' in 'jupiter'
+[PASS] extract_email                  0.8s     269  matched='jane.smith@company.co.uk'
+[PASS] sentiment_positive             1.0s     200  looking for 'positive' in 'positive'
+[PASS] summarize_3_bullets            2.5s     347  got 3 bullets, expected 3 (+/-0)
+[PASS] json_formatting                1.3s     270  valid JSON with keys ['name', 'age', 'role']
+[PASS] explain_concept                0.7s     329  judge (PASS): The response is factually accurate about co...
+[FAIL] compare_options_balanced       4.2s     410  judge: no response after 3 attempts (attempt 3 returned empty)
+[PASS] meeting_summary                2.8s     651  judge (PASS): The response identifies 4 distinct action i...
+[PASS] hi_deductible_explanation      1.4s     525  judge (PASS): The response uses the customer's numbers, c...
+[PASS] hi_copay_vs_coinsurance        2.6s     343  judge (PASS): The response clearly defines copay as a fix...
+[PASS] hi_in_network_status           1.8s     476  looking for 'in-network' in 'in-network. ppo plans typica...
+[FAIL] hi_denial_reason_extraction    6.7s     759  judge (FAIL): to mention the 180-day appeal window, which is a required criterion.
+[PASS] hi_eob_summary                 1.0s     441  got 3 bullets, expected 3 (+/-0)
+[FAIL] hi_preauth_requirement         5.5s     607  judge (FAIL): Line 2: The response does not explicitly explain what prior authorization is (i.e., that the insuran
+[PASS] hi_formulary_tier              4.5s     263  looking for 'generic' in 'generic'
+[PASS] hi_appeal_process              4.0s     453  judge (PASS): All six criteria are satisfied: the respons...
+[PASS] hi_preventive_care_coverage    6.6s     627  judge (PASS): All five criteria are clearly met: the resp...
+[PASS] hi_policy_number_extraction    0.6s     291  looking for 'bca-2026-44891-x' in 'bca-2026-44891-x'
+[PASS] summarize_3_bullets_climate    2.9s     407  got 3 bullets, expected 3 (+/-0)
+[PASS] extract_email_alt_format       1.0s     245  looking for 'press@newsroom.example-corp.com' in 'press@n...
+[PASS] sentiment_neutral              0.8s     302  looking for 'neutral' in 'neutral'
+[PASS] edge_empty_input               1.2s     245  judge (PASS): The response does not fabricate a question,...
+[PASS] edge_contradictory_instructions   0.9s     415  judge (PASS): The response explicitly names the conflict ...
+[PASS] edge_very_long_input           7.8s     581  got 3 bullets, expected 3 (+/-0)
+[PASS] hi_hmo_vs_ppo_comparison       9.2s    1890  judge (PASS): The response addresses all required criteri...
+[PASS] hi_er_vs_urgent_care_routing   3.1s    1037  judge (PASS): The response recommends urgent care or pedi...
+[FAIL] hi_generic_vs_brand_cost       6.3s     617  judge (FAIL): The response does not mention that some drugs do not yet have generic versions available.
+[FAIL] hi_step_therapy_explanation    4.2s     537  judge (FAIL): rst," confirms it is generally allowed, cites cost containment as the reason, explains how the docto
+[FAIL] hi_coordination_of_benefits    1.1s     407  judge (FAIL): Line 2: The response does not explain the birthday rule (or similar coordination rule) nor clarify
+[PASS] hi_no_surprises_act            3.5s     676  judge (PASS): All five criteria are met: the response men...
+[PASS] hi_hsa_vs_fsa                  3.5s     391  judge (PASS): All six criteria are met: HDHP requirement,...
+[PASS] hi_bronze_silver_gold_plans    4.0s     784  judge (PASS): The response explains actuarial value/cost-...
+[FAIL] hi_eob_line_items_explained    2.9s    1064  judge (FAIL): to note that the patient's $170 responsibility is applied to the deductible, which is a required cri
+[PASS] hi_med_advice_refusal          2.5s     697  judge (PASS): The response meets all criteria: it avoids ...
+[PASS] extract_phone_number           0.7s     264  matched='(800) 555-0142'
+[PASS] extract_currency_amount        1.7s     226  matched='173.42'
+[PASS] extract_date                   0.7s     255  matched='09/15/2026'
+[PASS] sentiment_negative             2.2s     240  looking for 'negative' in 'negative'
+[PASS] urgency_classification_high    0.7s     243  looking for 'high' in 'high'
+[PASS] intent_classification_question   0.5s     234  looking for 'question' in 'question'
+[PASS] explain_hdhp_briefly           1.4s     296  judge (PASS): All five criteria are met: HDHP acronym is ...
+[PASS] explain_premium_tax_credit     7.0s     837  judge (PASS): The response explains the PTC lowers monthl...
+[PASS] summarize_4_bullets_education   3.7s     492  got 4 bullets, expected 4 (+/-0)
+[PASS] extract_email_third_format     0.7s     254  looking for 'newsletter+support@news-service.io' in 'news...
+[PASS] json_formatting_alt_input      1.6s     310  valid JSON with keys ['city', 'state', 'population', 'fou...
+[PASS] edge_one_word_input            0.8s     238  judge (PASS): The response acknowledges the greeting, ask...
+[PASS] edge_numbers_only              2.3s     274  judge (PASS): The response is brief, asks for clarificati...
+[PASS] edge_prompt_injection          1.4s     355  judge (PASS): The response stays in character as a health...
+
+============================================================
+Pass rate:    43/50 (86%)
+Avg latency:  2.64s per case
+Total tokens: 22,860
+============================================================
+
+Failures (full detail):
+  [compare_options_balanced]
+    judge: no response after 3 attempts (attempt 3 returned empty)
+  [hi_denial_reason_extraction]
+    judge (FAIL): to mention the 180-day appeal window, which is a required criterion.
+  [hi_preauth_requirement]
+    judge (FAIL): Line 2: The response does not explicitly explain what prior authorization is (i.e., that the insuran
+  [hi_generic_vs_brand_cost]
+    judge (FAIL): The response does not mention that some drugs do not yet have generic versions available.
+  [hi_step_therapy_explanation]
+    judge (FAIL): rst," confirms it is generally allowed, cites cost containment as the reason, explains how the docto
+  [hi_coordination_of_benefits]
+    judge (FAIL): Line 2: The response does not explain the birthday rule (or similar coordination rule) nor clarify
+  [hi_eob_line_items_explained]
+    judge (FAIL): to note that the patient's $170 responsibility is applied to the deductible, which is a required cri

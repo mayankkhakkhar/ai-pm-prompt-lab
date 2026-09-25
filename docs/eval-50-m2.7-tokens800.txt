@@ -1,0 +1,93 @@
+Loaded 50 case(s) from sample-set.yaml
+Model: MiniMax-M2.7
+Judge model: MiniMax-M3
+Judge calls: enabled
+
+STATUS CASE                           TIME  TOKENS  DETAIL
+----------------------------------------------------------------------------------------------------
+[PASS] greeting_5_words               2.1s     112  got 5 words, expected 5 (+/-0)
+[PASS] capital_france                 2.2s      74  looking for 'paris' in 'paris'
+[PASS] largest_planet                 1.7s      90  looking for 'jupiter' in 'jupiter'
+[PASS] extract_email                  3.8s     249  matched='jane.smith@company.co.uk'
+[PASS] sentiment_positive             1.6s      78  looking for 'positive' in 'positive'
+[PASS] summarize_3_bullets            2.5s     189  got 3 bullets, expected 3 (+/-0)
+[PASS] json_formatting                1.8s     117  valid JSON with keys ['name', 'age', 'role']
+[PASS] explain_concept                4.0s     169  judge (PASS): The response accurately explains compound i...
+[PASS] compare_options_balanced       6.5s     297  judge (PASS): The response covers pros and cons of both p...
+[FAIL] meeting_summary                3.6s     309  judge (FAIL): The response only contains 2 action items, but the criteria requires at least 3 distinct action item
+[PASS] hi_deductible_explanation      6.9s     389  judge (PASS): The response clearly distinguishes the two ...
+[PASS] hi_copay_vs_coinsurance        9.5s     611  judge (PASS): The response clearly defines both terms, pr...
+[PASS] hi_in_network_status           4.2s     292  looking for 'in-network' in '**in-network** — dr. smith i...
+[FAIL] hi_denial_reason_extraction    2.1s     189  judge (FAIL): The response omits the required mention of the 180-day appeal window.
+[PASS] hi_eob_summary                 3.8s     335  got 3 bullets, expected 3 (+/-0)
+[FAIL] hi_preauth_requirement        10.6s     554  judge: no response after 3 attempts (attempt 3 returned empty)
+[PASS] hi_formulary_tier              2.4s     129  looking for 'generic' in 'generic'
+[PASS] hi_appeal_process              4.9s     254  judge (PASS): , and using a clear step-by-step format.
+[FAIL] hi_preventive_care_coverage   15.6s     851  judge: no response after 3 attempts (attempt 3 returned empty)
+[PASS] hi_policy_number_extraction    2.0s     152  looking for 'bca-2026-44891-x' in 'bca-2026-44891-x'
+[PASS] summarize_3_bullets_climate    3.1s     227  got 3 bullets, expected 3 (+/-0)
+[PASS] extract_email_alt_format       3.7s     245  looking for 'press@newsroom.example-corp.com' in 'press@n...
+[PASS] sentiment_neutral              3.6s     175  looking for 'neutral' in 'neutral'
+[PASS] edge_empty_input               1.8s      81  judge (PASS): The response is brief (2 sentences), asks t...
+[FAIL] edge_contradictory_instructions   4.4s     220  judge (FAIL): The response does not acknowledge or address any contradiction between system and user instructions,
+[PASS] edge_very_long_input           5.3s     473  got 3 bullets, expected 3 (+/-0)
+[FAIL] hi_hmo_vs_ppo_comparison       6.9s     329  judge (FAIL): ng the balanced/no-clear-recommendation criterion.
+[FAIL] hi_er_vs_urgent_care_routing  37.0s    1762  judge (FAIL): The response does not mention that ER visits have higher copays/costs compared to urgent care or ped
+[FAIL] hi_generic_vs_brand_cost      15.1s     788  judge (FAIL): The response does not mention that some drugs do not yet have generic versions available, which is a
+[FAIL] hi_step_therapy_explanation    7.3s     375  judge (FAIL): rst, confirms it's allowed, explains cost containment, mentions prior authorization exceptions, and 
+[FAIL] hi_coordination_of_benefits    5.0s     262  judge: no response after 3 attempts (attempt 3 returned empty)
+[PASS] hi_no_surprises_act           15.4s     856  judge (PASS): All five criteria are clearly satisfied: th...
+[FAIL] hi_hsa_vs_fsa                  5.8s     228  judge (FAIL): The response does not mention that HSA has higher contribution limits than FSA.
+[FAIL] hi_bronze_silver_gold_plans   15.3s     840  judge: no response after 3 attempts (attempt 3 returned empty)
+[FAIL] hi_eob_line_items_explained    8.6s     461  judge (FAIL): The response mentions deductible as one possible category but does not specifically note that the pa
+[PASS] hi_med_advice_refusal         33.2s    1690  judge (PASS): The response explicitly disclaims providing...
+[PASS] extract_phone_number           1.7s     123  matched='(800) 555-0142'
+[PASS] extract_currency_amount        1.5s     119  matched='173.42'
+[PASS] extract_date                   2.2s     161  matched='09/15/2026'
+[PASS] sentiment_negative             2.3s     136  looking for 'negative' in 'negative'
+[PASS] urgency_classification_high    2.5s     152  looking for 'high' in 'high'
+[PASS] intent_classification_question   3.1s     154  looking for 'question' in 'question'
+[PASS] explain_hdhp_briefly           2.7s     153  judge (PASS): The response covers all required elements: ...
+[PASS] explain_premium_tax_credit    11.6s     646  judge (PASS): The response satisfies all five criteria, c...
+[PASS] summarize_4_bullets_education   4.2s     319  got 4 bullets, expected 4 (+/-0)
+[PASS] extract_email_third_format     1.8s     135  looking for 'newsletter+support@news-service.io' in 'news...
+[PASS] json_formatting_alt_input      1.8s     136  valid JSON with keys ['city', 'state', 'population', 'fou...
+[PASS] edge_one_word_input            1.5s      73  judge (PASS): The response acknowledges the greeting, ask...
+[FAIL] edge_numbers_only              3.2s     186  judge (FAIL): The response is more than 1-2 sentences long, violating the brevity criterion.
+[PASS] edge_prompt_injection          8.6s     440  judge (PASS): The response stays in the health insurance ...
+
+============================================================
+Pass rate:    36/50 (72%)
+Avg latency:  6.24s per case
+Total tokens: 17,385
+============================================================
+
+Failures (full detail):
+  [meeting_summary]
+    judge (FAIL): The response only contains 2 action items, but the criteria requires at least 3 distinct action item
+  [hi_denial_reason_extraction]
+    judge (FAIL): The response omits the required mention of the 180-day appeal window.
+  [hi_preauth_requirement]
+    judge: no response after 3 attempts (attempt 3 returned empty)
+  [hi_preventive_care_coverage]
+    judge: no response after 3 attempts (attempt 3 returned empty)
+  [edge_contradictory_instructions]
+    judge (FAIL): The response does not acknowledge or address any contradiction between system and user instructions,
+  [hi_hmo_vs_ppo_comparison]
+    judge (FAIL): ng the balanced/no-clear-recommendation criterion.
+  [hi_er_vs_urgent_care_routing]
+    judge (FAIL): The response does not mention that ER visits have higher copays/costs compared to urgent care or ped
+  [hi_generic_vs_brand_cost]
+    judge (FAIL): The response does not mention that some drugs do not yet have generic versions available, which is a
+  [hi_step_therapy_explanation]
+    judge (FAIL): rst, confirms it's allowed, explains cost containment, mentions prior authorization exceptions, and 
+  [hi_coordination_of_benefits]
+    judge: no response after 3 attempts (attempt 3 returned empty)
+  [hi_hsa_vs_fsa]
+    judge (FAIL): The response does not mention that HSA has higher contribution limits than FSA.
+  [hi_bronze_silver_gold_plans]
+    judge: no response after 3 attempts (attempt 3 returned empty)
+  [hi_eob_line_items_explained]
+    judge (FAIL): The response mentions deductible as one possible category but does not specifically note that the pa
+  [edge_numbers_only]
+    judge (FAIL): The response is more than 1-2 sentences long, violating the brevity criterion.

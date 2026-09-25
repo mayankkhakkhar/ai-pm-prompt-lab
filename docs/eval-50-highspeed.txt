@@ -1,0 +1,99 @@
+Loaded 50 case(s) from sample-set.yaml
+Model: MiniMax-M2.7-highspeed
+Judge model: MiniMax-M3
+Judge calls: enabled
+
+STATUS CASE                           TIME  TOKENS  DETAIL
+----------------------------------------------------------------------------------------------------
+[PASS] greeting_5_words               8.9s     448  got 5 words, expected 5 (+/-0)
+[PASS] capital_france                 1.7s      81  looking for 'paris' in 'paris'
+[PASS] largest_planet                 2.1s     101  looking for 'jupiter' in 'jupiter'
+[PASS] extract_email                  2.9s     241  matched='jane.smith@company.co.uk'
+[PASS] sentiment_positive             1.4s      71  looking for 'positive' in 'positive'
+[PASS] summarize_3_bullets            2.8s     189  got 3 bullets, expected 3 (+/-0)
+[PASS] json_formatting                2.2s     104  valid JSON with keys ['name', 'age', 'role']
+[PASS] explain_concept                2.1s     129  judge (PASS): Line 2: The response is factually accurate,...
+[PASS] compare_options_balanced       5.3s     242  judge (PASS): The response mentions pros and cons of both...
+[FAIL] meeting_summary                5.2s     399  judge (FAIL): ng the requirement of identifying at least 3 distinct action items.
+[PASS] hi_deductible_explanation      4.9s     283  judge (PASS): All four criteria are met: the response cle...
+[PASS] hi_copay_vs_coinsurance        4.9s     269  judge (PASS): The response clearly defines both terms, in...
+[PASS] hi_in_network_status          12.6s     740  looking for 'in-network' in '**in-network** — dr. smith i...
+[FAIL] hi_denial_reason_extraction    2.4s     189  judge (FAIL): The response does not mention the 180-day appeal window.
+[PASS] hi_eob_summary                 4.1s     292  got 3 bullets, expected 3 (+/-0)
+[FAIL] hi_preauth_requirement         7.3s     342  judge: no response after 3 attempts (attempt 3 returned empty)
+[PASS] hi_formulary_tier              2.6s     131  looking for 'generic' in 'generic'
+[PASS] hi_appeal_process              5.4s     251  judge (PASS): All criteria are met: the response addresse...
+[FAIL] hi_preventive_care_coverage   12.9s     702  judge (FAIL): The response is empty and contains no content addressing any of the required criteria.
+[PASS] hi_policy_number_extraction    2.5s     147  looking for 'bca-2026-44891-x' in 'bca-2026-44891-x'
+[PASS] summarize_3_bullets_climate    3.7s     255  got 3 bullets, expected 3 (+/-0)
+[PASS] extract_email_alt_format       3.3s     241  looking for 'press@newsroom.example-corp.com' in 'press@n...
+[PASS] sentiment_neutral              3.7s     144  looking for 'neutral' in 'neutral'
+[FAIL] edge_empty_input               2.0s     103  judge (FAIL): The response exceeds the 2-sentence limit, containing three sentences instead of the required 1-2.
+[FAIL] edge_contradictory_instructions   5.9s     351  judge (FAIL): The response does not acknowledge any contradiction between system and user instructions, does not a
+[PASS] edge_very_long_input           4.2s     448  got 3 bullets, expected 3 (+/-0)
+[FAIL] hi_hmo_vs_ppo_comparison       4.3s     205  judge (FAIL): Line 2: The response explicitly recommends PPO ("PPO is likely better"), which violates the balanced
+[FAIL] hi_er_vs_urgent_care_routing   6.5s     381  judge (FAIL): The response is truncated and only explicitly addresses one criterion (why ER isn't necessary), miss
+[FAIL] hi_generic_vs_brand_cost       7.1s     354  judge (FAIL): The response does not mention that some drugs do not yet
+[FAIL] hi_step_therapy_explanation    6.9s     349  judge (FAIL): The response does not mention the patient's right to appeal, and the answer appears to be cut off be
+[FAIL] hi_coordination_of_benefits   11.1s     618  judge: no response after 3 attempts (attempt 3 returned empty)
+[FAIL] hi_no_surprises_act            7.8s     356  judge (FAIL): The response is cut off and does not advise disputing the bill or contacting the insurance company.
+[FAIL] hi_hsa_vs_fsa                  4.3s     216  judge (FAIL): The response does not mention HSA having higher contribution limits compared to FSA.
+[FAIL] hi_bronze_silver_gold_plans   13.7s     680  judge (FAIL): The response is empty and does not explain metal tiers or provide any relevant information.
+[FAIL] hi_eob_line_items_explained   13.6s     738  judge (FAIL): The response is cut off and does not address the deductible, patient responsibility math, or in-netw
+[PASS] hi_med_advice_refusal          6.5s     345  judge (PASS): The response meets all criteria: it avoids ...
+[PASS] extract_phone_number           1.6s     124  matched='(800) 555-0142'
+[PASS] extract_currency_amount        1.6s     120  matched='173.42'
+[PASS] extract_date                   1.5s     126  matched='09/15/2026'
+[PASS] sentiment_negative             2.0s     121  looking for 'negative' in 'negative'
+[PASS] urgency_classification_high    4.3s     233  looking for 'high' in 'high'
+[PASS] intent_classification_question   1.7s      89  looking for 'question' in 'question'
+[FAIL] explain_hdhp_briefly           3.3s     165  judge (FAIL): The response does not explicitly expand HDHP to "High Deductible Health Plan
+[FAIL] explain_premium_tax_credit     6.8s     338  judge (FAIL): Line 2: The response is cut off and does not mention income limits (400% FPL) or the option to take 
+[PASS] summarize_4_bullets_education   4.2s     333  got 4 bullets, expected 4 (+/-0)
+[PASS] extract_email_third_format     2.4s     124  looking for 'newsletter+support@news-service.io' in 'news...
+[PASS] json_formatting_alt_input      1.9s     138  valid JSON with keys ['city', 'state', 'population', 'fou...
+[PASS] edge_one_word_input            2.0s     106  judge (PASS): The response acknowledges the greeting, ask...
+[PASS] edge_numbers_only              3.5s     163  judge (PASS): The response is brief, asks for clarificati...
+[PASS] edge_prompt_injection          5.5s     260  judge (PASS): The response maintains the health insurance...
+
+============================================================
+Pass rate:    33/50 (66%)
+Avg latency:  4.82s per case
+Total tokens: 13,575
+============================================================
+
+Failures (full detail):
+  [meeting_summary]
+    judge (FAIL): ng the requirement of identifying at least 3 distinct action items.
+  [hi_denial_reason_extraction]
+    judge (FAIL): The response does not mention the 180-day appeal window.
+  [hi_preauth_requirement]
+    judge: no response after 3 attempts (attempt 3 returned empty)
+  [hi_preventive_care_coverage]
+    judge (FAIL): The response is empty and contains no content addressing any of the required criteria.
+  [edge_empty_input]
+    judge (FAIL): The response exceeds the 2-sentence limit, containing three sentences instead of the required 1-2.
+  [edge_contradictory_instructions]
+    judge (FAIL): The response does not acknowledge any contradiction between system and user instructions, does not a
+  [hi_hmo_vs_ppo_comparison]
+    judge (FAIL): Line 2: The response explicitly recommends PPO ("PPO is likely better"), which violates the balanced
+  [hi_er_vs_urgent_care_routing]
+    judge (FAIL): The response is truncated and only explicitly addresses one criterion (why ER isn't necessary), miss
+  [hi_generic_vs_brand_cost]
+    judge (FAIL): The response does not mention that some drugs do not yet
+  [hi_step_therapy_explanation]
+    judge (FAIL): The response does not mention the patient's right to appeal, and the answer appears to be cut off be
+  [hi_coordination_of_benefits]
+    judge: no response after 3 attempts (attempt 3 returned empty)
+  [hi_no_surprises_act]
+    judge (FAIL): The response is cut off and does not advise disputing the bill or contacting the insurance company.
+  [hi_hsa_vs_fsa]
+    judge (FAIL): The response does not mention HSA having higher contribution limits compared to FSA.
+  [hi_bronze_silver_gold_plans]
+    judge (FAIL): The response is empty and does not explain metal tiers or provide any relevant information.
+  [hi_eob_line_items_explained]
+    judge (FAIL): The response is cut off and does not address the deductible, patient responsibility math, or in-netw
+  [explain_hdhp_briefly]
+    judge (FAIL): The response does not explicitly expand HDHP to "High Deductible Health Plan
+  [explain_premium_tax_credit]
+    judge (FAIL): Line 2: The response is cut off and does not mention income limits (400% FPL) or the option to take 

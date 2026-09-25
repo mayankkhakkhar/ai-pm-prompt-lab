@@ -38,7 +38,7 @@ def load_eval_set(path: Path) -> list[dict]:
     return data["cases"]
 
 
-def call_model(client: OpenAI, model: str, case: dict, max_tokens: int = 300) -> tuple[str, float, int]:
+def call_model(client: OpenAI, model: str, case: dict, max_tokens: int = 800) -> tuple[str, float, int]:
     """Call MiniMax with the case's input. Returns (raw_output, latency, total_tokens)."""
     messages = []
     if system := case.get("input", {}).get("system"):

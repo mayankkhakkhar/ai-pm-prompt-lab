@@ -11,7 +11,7 @@ Built by a product manager learning AI engineering from a builder's perspective.
 | Component | What it does | Try it |
 |---|---|---|
 | **Prompt playground** | Streamlit app — type one prompt, see 3 temperature variants side by side | `streamlit run playground.py` |
-| **Eval harness** | 26 test cases (knowledge, format, extraction, classification, qualitative, **health-insurance**, edge cases), 7 scorer types, runs any model against the suite | `python run_eval.py --model MiniMax-M3 --judge-model MiniMax-M3` |
+| **Eval harness** | 50 test cases (knowledge, format, extraction, classification, qualitative, **health-insurance**, edge cases), 7 scorer types, runs any model against the suite | `python run_eval.py --model MiniMax-M3 --judge-model MiniMax-M3` |
 | **Experiments** | Real model comparisons, documented findings | [`experiments/`](./experiments/) |
 
 ![Playground showing 3 temperature variants of the same prompt](./docs/screenshots/playground-filled.png)
@@ -98,16 +98,16 @@ Full sample run: [`docs/sample-eval-output.txt`](./docs/sample-eval-output.txt)
 
 The `llm_judge` scorer is the interesting one — it makes a second API call to a judge model and asks it to evaluate against a rubric. Useful for qualitative tests like "is this explanation age-appropriate?"
 
-### Test cases in `evals/sample-set.yaml` (26 total)
+### Test cases in `evals/sample-set.yaml` (50 total)
 
 - **Format constraints** — word count, bullet count, JSON structure
 - **Knowledge retrieval** — capital cities, planets
-- **Extraction** — pull an email from prose, policy numbers
-- **Classification** — sentiment
+- **Extraction** — email (3 variants), phone, dollar amount, date, policy numbers
+- **Classification** — sentiment (3 variants), urgency, intent
 - **Qualitative (LLM-judge)** — explain concepts, compare options, summarize meetings
-- **Health insurance (PM-flavored)** — deductibles, copay vs coinsurance, EOBs, denial reasons, formulary tiers, appeals, preventive care coverage
-- **Variance variants** — same skill, different inputs (summarization, extraction, sentiment) to measure reliability
-- **Edge cases** — empty input, contradictory system+user instructions, very long input
+- **Health insurance (PM-flavored, 20 cases)** — deductibles, copay vs coinsurance, EOBs, denial reasons, formulary tiers, appeals, preventive care, HMO vs PPO, ER vs urgent care, generic vs brand, step therapy, coordination of benefits, No Surprises Act, HSA vs FSA, metal tiers, EOB line items, medical-advice safety
+- **Variance variants (6 cases)** — same skill, different inputs (summarization, extraction, sentiment, JSON) to measure reliability
+- **Edge cases (6 cases)** — empty input, contradictory instructions, very long input, one-word input, numbers-only input, prompt-injection attempt
 
 ### Flags
 
@@ -129,6 +129,7 @@ Documented comparisons and findings in [`experiments/`](./experiments/).
 |---|---|---|
 | 01 | [3-model eval comparison (10 cases)](./experiments/01-3-model-eval-comparison.md) | On an easy eval, all 3 models hit 100%. Doesn't tell you which to ship. |
 | 02 | [3-model eval comparison (26 cases)](./experiments/02-3-model-eval-on-harder-suite.md) | On a hard eval, M3 (88%) > M2.7-highspeed (81%) > M2.7 (73%). M3 costs 49% more tokens. |
+| 03 | [3-model eval comparison (50 cases)](./experiments/03-50-case-eval-the-ceiling.md) | On the hardest eval yet, all 3 models converge to 66-68%. M3's premium doesn't pencil out. |
 
 ---
 

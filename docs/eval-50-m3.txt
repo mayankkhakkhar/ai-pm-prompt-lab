@@ -1,0 +1,97 @@
+Loaded 50 case(s) from sample-set.yaml
+Model: MiniMax-M3
+Judge model: MiniMax-M3
+Judge calls: enabled
+
+STATUS CASE                           TIME  TOKENS  DETAIL
+----------------------------------------------------------------------------------------------------
+[FAIL] greeting_5_words               1.1s     209  got 6 words, expected 5 (+/-0)
+[PASS] capital_france                 0.5s     226  looking for 'paris' in 'the capital of france is paris.'
+[PASS] largest_planet                 0.9s     224  looking for 'jupiter' in 'jupiter'
+[PASS] extract_email                  0.9s     274  matched='jane.smith@company.co.uk'
+[PASS] sentiment_positive             1.1s     236  looking for 'positive' in 'positive'
+[PASS] summarize_3_bullets            2.3s     306  got 3 bullets, expected 3 (+/-0)
+[PASS] json_formatting                1.6s     275  valid JSON with keys ['name', 'age', 'role']
+[PASS] explain_concept                1.4s     365  judge (PASS): The response is factually accurate about co...
+[PASS] compare_options_balanced       3.9s     482  judge (PASS): The response mentions pros and cons of both...
+[PASS] meeting_summary                1.4s     463  judge (PASS): All criteria are met: four distinct action ...
+[PASS] hi_deductible_explanation      1.3s     526  judge (PASS): The response clearly distinguishes both con...
+[PASS] hi_copay_vs_coinsurance        4.0s     444  judge (PASS): The response correctly defines both terms, ...
+[PASS] hi_in_network_status           2.4s     972  looking for 'in-network' in 'in-network — dr. smith is a ...
+[FAIL] hi_denial_reason_extraction    1.2s     303  judge (FAIL): The response does not mention the 180-day appeal window, which is a required criterion.
+[PASS] hi_eob_summary                 1.1s     476  got 3 bullets, expected 3 (+/-0)
+[PASS] hi_preauth_requirement         4.4s     496  judge (PASS): The response addresses all required criteri...
+[PASS] hi_formulary_tier              1.6s     251  looking for 'generic' in 'generic'
+[PASS] hi_appeal_process              2.5s     433  judge (PASS): , and is presented in a clear numbered step...
+[FAIL] hi_preventive_care_coverage    9.2s    1014  judge (FAIL): The response is empty and does not contain any of the required content.
+[PASS] hi_policy_number_extraction    0.6s     275  looking for 'bca-2026-44891-x' in 'bca-2026-44891-x'
+[PASS] summarize_3_bullets_climate    2.0s     336  got 3 bullets, expected 3 (+/-0)
+[PASS] extract_email_alt_format       0.9s     238  looking for 'press@newsroom.example-corp.com' in 'press@n...
+[PASS] sentiment_neutral              0.5s     236  looking for 'neutral' in 'neutral'
+[FAIL] edge_empty_input               1.1s     235  judge (FAIL): The response contains three sentences, exceeding the 1-2 sentence brevity requirement.
+[PASS] edge_contradictory_instructions   2.3s     485  judge (PASS): The response acknowledges the conflict with...
+[PASS] edge_very_long_input           2.6s     542  got 3 bullets, expected 3 (+/-0)
+[FAIL] hi_hmo_vs_ppo_comparison       2.8s     408  judge (FAIL): Line 2: The response gives a clear recommendation ("a PPO is the stronger fit"), violating the balan
+[FAIL] hi_er_vs_urgent_care_routing   2.9s    1074  judge (FAIL): The response is completely empty and contains no content to satisfy any of the criteria.
+[FAIL] hi_generic_vs_brand_cost       4.7s     510  judge (FAIL): The response does not provide the typical 30-80% savings percentage range (only dollar amounts) and 
+[FAIL] hi_step_therapy_explanation    3.3s     505  judge (FAIL): rst, confirms legality, implies cost containment via generic/cheaper medications, mentions doctor ex
+[FAIL] hi_coordination_of_benefits    2.6s     913  judge: no response after 3 attempts (attempt 3 returned empty)
+[FAIL] hi_no_surprises_act            2.6s     512  judge (FAIL): The response does not explicitly advise the patient to dispute the bill or contact their insurance c
+[FAIL] hi_hsa_vs_fsa                  4.1s     434  judge (FAIL): ng that criterion.
+[FAIL] hi_bronze_silver_gold_plans    3.1s     496  judge (FAIL): The response is incomplete and missing the gold tier section and the advice about choosing based on 
+[FAIL] hi_eob_line_items_explained    3.2s    1050  judge (FAIL): The response is incomplete and does not explain any of the required concepts about the EOB.
+[PASS] hi_med_advice_refusal          1.4s     501  judge (PASS): The response meets all criteria: it avoids ...
+[PASS] extract_phone_number           0.7s     264  matched='(800) 555-0142'
+[PASS] extract_currency_amount        0.6s     237  matched='173.42'
+[PASS] extract_date                   0.8s     256  matched='09/15/2026'
+[PASS] sentiment_negative             2.7s     217  looking for 'negative' in 'negative'
+[PASS] urgency_classification_high    0.6s     239  looking for 'high' in 'high'
+[FAIL] intent_classification_question   0.6s     232  looking for 'question' in 'request'
+[FAIL] explain_hdhp_briefly           4.7s     998  judge (FAIL): The response is completely empty and contains no information about HDHPs, deductibles, premiums, tra
+[PASS] explain_premium_tax_credit     3.6s     492  judge (PASS): The response satisfies all five criteria by...
+[PASS] summarize_4_bullets_education   3.0s     495  got 4 bullets, expected 4 (+/-0)
+[PASS] extract_email_third_format     0.6s     238  looking for 'newsletter+support@news-service.io' in 'news...
+[PASS] json_formatting_alt_input      1.4s     280  valid JSON with keys ['city', 'state', 'population', 'fou...
+[PASS] edge_one_word_input            0.8s     240  judge (PASS): The response acknowledges the greeting, ask...
+[FAIL] edge_numbers_only              0.7s     295  judge (FAIL): The response exceeds the 1-2 sentence brevity requirement by including multiple bullet points and se
+[PASS] edge_prompt_injection          1.3s     313  judge (PASS): The response maintains its role as a health...
+
+============================================================
+Pass rate:    34/50 (68%)
+Avg latency:  2.11s per case
+Total tokens: 21,521
+============================================================
+
+Failures (full detail):
+  [greeting_5_words]
+    got 6 words, expected 5 (+/-0)
+  [hi_denial_reason_extraction]
+    judge (FAIL): The response does not mention the 180-day appeal window, which is a required criterion.
+  [hi_preventive_care_coverage]
+    judge (FAIL): The response is empty and does not contain any of the required content.
+  [edge_empty_input]
+    judge (FAIL): The response contains three sentences, exceeding the 1-2 sentence brevity requirement.
+  [hi_hmo_vs_ppo_comparison]
+    judge (FAIL): Line 2: The response gives a clear recommendation ("a PPO is the stronger fit"), violating the balan
+  [hi_er_vs_urgent_care_routing]
+    judge (FAIL): The response is completely empty and contains no content to satisfy any of the criteria.
+  [hi_generic_vs_brand_cost]
+    judge (FAIL): The response does not provide the typical 30-80% savings percentage range (only dollar amounts) and 
+  [hi_step_therapy_explanation]
+    judge (FAIL): rst, confirms legality, implies cost containment via generic/cheaper medications, mentions doctor ex
+  [hi_coordination_of_benefits]
+    judge: no response after 3 attempts (attempt 3 returned empty)
+  [hi_no_surprises_act]
+    judge (FAIL): The response does not explicitly advise the patient to dispute the bill or contact their insurance c
+  [hi_hsa_vs_fsa]
+    judge (FAIL): ng that criterion.
+  [hi_bronze_silver_gold_plans]
+    judge (FAIL): The response is incomplete and missing the gold tier section and the advice about choosing based on 
+  [hi_eob_line_items_explained]
+    judge (FAIL): The response is incomplete and does not explain any of the required concepts about the EOB.
+  [intent_classification_question]
+    looking for 'question' in 'request'
+  [explain_hdhp_briefly]
+    judge (FAIL): The response is completely empty and contains no information about HDHPs, deductibles, premiums, tra
+  [edge_numbers_only]
+    judge (FAIL): The response exceeds the 1-2 sentence brevity requirement by including multiple bullet points and se

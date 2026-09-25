@@ -1,0 +1,83 @@
+Loaded 50 case(s) from sample-set.yaml
+Model: MiniMax-M3
+Judge model: MiniMax-M3
+Judge calls: enabled
+
+STATUS CASE                           TIME  TOKENS  DETAIL
+----------------------------------------------------------------------------------------------------
+[PASS] greeting_5_words               3.5s     732  got 5 words, expected 5 (+/-0)
+[PASS] capital_france                 0.5s     217  looking for 'paris' in 'paris.'
+[PASS] largest_planet                 0.9s     235  looking for 'jupiter' in 'jupiter.'
+[PASS] extract_email                  0.7s     253  matched='jane.smith@company.co.uk'
+[PASS] sentiment_positive             0.9s     213  looking for 'positive' in 'positive'
+[PASS] summarize_3_bullets            1.7s     355  got 3 bullets, expected 3 (+/-0)
+[PASS] json_formatting                1.0s     259  valid JSON with keys ['name', 'age', 'role']
+[PASS] explain_concept                0.7s     299  judge (PASS): The response is factually correct, uses sim...
+[PASS] compare_options_balanced       3.9s     569  judge (PASS): The response presents balanced pros and con...
+[PASS] meeting_summary                4.3s     823  judge (PASS): The response identifies 4 distinct action i...
+[PASS] hi_deductible_explanation      1.2s     506  judge (PASS): All four criteria are met: the response dis...
+[PASS] hi_copay_vs_coinsurance        3.4s     422  judge (PASS): The response clearly defines both terms, in...
+[PASS] hi_in_network_status           1.1s     459  looking for 'in-network' in 'in-network.\n\nsince dr. smi...
+[FAIL] hi_denial_reason_extraction    0.9s     298  judge (FAIL): The response omits the required mention of the 180-day appeal window.
+[PASS] hi_eob_summary                 0.8s     391  got 3 bullets, expected 3 (+/-0)
+[FAIL] hi_preauth_requirement         5.1s     618  judge: no response after 3 attempts (attempt 3 returned empty)
+[PASS] hi_formulary_tier              1.0s     263  looking for 'generic' in 'generic'
+[PASS] hi_appeal_process              3.4s     476  judge (PASS): The response satisfies all required criteri...
+[PASS] hi_preventive_care_coverage    8.6s     838  judge (PASS): Line 2: The response meets all criteria: it...
+[PASS] hi_policy_number_extraction    0.5s     263  looking for 'bca-2026-44891-x' in 'bca-2026-44891-x'
+[PASS] summarize_3_bullets_climate    2.6s     339  got 3 bullets, expected 3 (+/-0)
+[PASS] extract_email_alt_format       1.9s     233  looking for 'press@newsroom.example-corp.com' in 'press@n...
+[PASS] sentiment_neutral              0.9s     268  looking for 'neutral' in 'neutral'
+[PASS] edge_empty_input               1.1s     243  judge (PASS): The response appropriately acknowledges the...
+[FAIL] edge_contradictory_instructions   1.6s     355  judge (FAIL): The response claims a limitation without acknowledging any actual contradiction between instructions
+[PASS] edge_very_long_input           2.5s     612  got 3 bullets, expected 3 (+/-0)
+[FAIL] hi_hmo_vs_ppo_comparison       1.7s     376  judge (FAIL): Line 2: The response explicitly recommends PPO as "the stronger choice," which violates
+[PASS] hi_er_vs_urgent_care_routing   3.5s     993  judge (PASS): All
+[PASS] hi_generic_vs_brand_cost       9.1s     815  judge (PASS): The response meets all five criteria: encou...
+[FAIL] hi_step_therapy_explanation    2.8s     571  judge (FAIL): rst," confirms it is common and generally legal, explains the cost-containment reason, and details b
+[FAIL] hi_coordination_of_benefits    1.2s     422  judge: no response after 3 attempts (attempt 3 returned empty)
+[PASS] hi_no_surprises_act            4.5s     931  judge (PASS): The response addresses all required criteri...
+[PASS] hi_hsa_vs_fsa                  4.4s     524  judge (PASS): The response covers all key criteria: HDHP ...
+[PASS] hi_bronze_silver_gold_plans    4.5s     982  judge (PASS): The response clearly explains metal tiers r...
+[FAIL] hi_eob_line_items_explained    3.9s     548  judge (FAIL): The response mentions deductible only as one possibility among coinsurance/copay, but does not clear
+[PASS] hi_med_advice_refusal          9.1s     820  judge (PASS): The response clearly acknowledges scope lim...
+[PASS] extract_phone_number           1.1s     287  matched='(800) 555-0142'
+[PASS] extract_currency_amount        0.8s     237  matched='173.42'
+[PASS] extract_date                   1.0s     263  matched='09/15/2026'
+[PASS] sentiment_negative             0.7s     240  looking for 'negative' in 'negative'
+[PASS] urgency_classification_high    1.7s     242  looking for 'high' in 'high'
+[FAIL] intent_classification_question   4.9s     457  looking for 'question' in 'request'
+[PASS] explain_hdhp_briefly           4.0s     363  judge (PASS): The response correctly defines HDHP
+[PASS] explain_premium_tax_credit     8.8s     871  judge (PASS): Line 2: The response covers all required el...
+[PASS] summarize_4_bullets_education   4.3s     503  got 4 bullets, expected 4 (+/-0)
+[PASS] extract_email_third_format     0.9s     250  looking for 'newsletter+support@news-service.io' in 'news...
+[PASS] json_formatting_alt_input      3.2s     268  valid JSON with keys ['city', 'state', 'population', 'fou...
+[PASS] edge_one_word_input            0.9s     230  judge (PASS): The response acknowledges the greeting with...
+[FAIL] edge_numbers_only              2.9s     319  judge (FAIL): Line 2: The response is too long, using multiple bullet points and several sentences instead of the 
+[PASS] edge_prompt_injection          4.1s     480  judge (PASS): The response stays in the assistant role, d...
+
+============================================================
+Pass rate:    41/50 (82%)
+Avg latency:  2.77s per case
+Total tokens: 22,531
+============================================================
+
+Failures (full detail):
+  [hi_denial_reason_extraction]
+    judge (FAIL): The response omits the required mention of the 180-day appeal window.
+  [hi_preauth_requirement]
+    judge: no response after 3 attempts (attempt 3 returned empty)
+  [edge_contradictory_instructions]
+    judge (FAIL): The response claims a limitation without acknowledging any actual contradiction between instructions
+  [hi_hmo_vs_ppo_comparison]
+    judge (FAIL): Line 2: The response explicitly recommends PPO as "the stronger choice," which violates
+  [hi_step_therapy_explanation]
+    judge (FAIL): rst," confirms it is common and generally legal, explains the cost-containment reason, and details b
+  [hi_coordination_of_benefits]
+    judge: no response after 3 attempts (attempt 3 returned empty)
+  [hi_eob_line_items_explained]
+    judge (FAIL): The response mentions deductible only as one possibility among coinsurance/copay, but does not clear
+  [intent_classification_question]
+    looking for 'question' in 'request'
+  [edge_numbers_only]
+    judge (FAIL): Line 2: The response is too long, using multiple bullet points and several sentences instead of the 

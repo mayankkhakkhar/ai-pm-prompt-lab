@@ -1,0 +1,33 @@
+Loaded 50 case(s) from sample-set.yaml
+Model: MiniMax-M2.7
+Judge model: MiniMax-M3
+Judge calls: enabled
+
+STATUS CASE                           TIME  TOKENS  DETAIL
+----------------------------------------------------------------------------------------------------
+[PASS] greeting_5_words               9.6s     604  got 5 words, expected 5 (+/-0)
+Traceback (most recent call last):
+  File "D:\work\Learning\code\ai-pm-prompt-lab\run_eval.py", line 186, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "D:\work\Learning\code\ai-pm-prompt-lab\run_eval.py", line 146, in main
+    result = run_case(client, model, case, run_judge=not args.no_judge, judge_model=args.judge_model)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\work\Learning\code\ai-pm-prompt-lab\run_eval.py", line 81, in run_case
+    raw_output, latency, tokens = call_model(client, model, case)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\work\Learning\code\ai-pm-prompt-lab\run_eval.py", line 53, in call_model
+    response = client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\mayan\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_utils\_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\mayan\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\resources\chat\completions\completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "C:\Users\mayan\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\mayan\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'type': 'error', 'error': {'type': 'rate_limit_error', 'message': 'Token Plan rate limit reached: Upgrade your Token Plan or switch to pay-as-you-go API usage. (2062)', 'http_code': '429'}, 'request_id': '07053d38dff2acfce59a85d07794c465'}
