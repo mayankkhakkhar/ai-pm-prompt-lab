@@ -216,9 +216,7 @@ After Phase 1, you should be able to evaluate any LLM feature on:
 | Prompt playground (model picker, temp sweep, max_tokens) | ✅ done |
 | 3-model comparison (10-case baseline + 26-case follow-up) | ✅ done |
 | PM-flavored health insurance cases | ✅ done |
-| Variance experiments (N=3 per model) | 🚧 next |
-| LangChain / RAG (Phase 2) | ⏳ pending |
-| AI Agents (Phase 3) | ⏳ pending |
+
 
 ---
 
